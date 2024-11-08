@@ -40,6 +40,10 @@ def financial_planning():
         event_fee
     )
     
+    # Calculate total expenses
+    total_expenses = sum(expenses.values())
+    expenses['Total'] = total_expenses
+    
     fig = go.Figure(data=[
         go.Pie(labels=list(expenses.keys()), values=list(expenses.values()))
     ])
@@ -55,7 +59,7 @@ def financial_planning():
     if cashflow['net_cashflow'].min() < 0:
         st.warning("⚠️ Projected negative cash flow detected!")
     
-    if expenses['total'] > revenue_forecast['total_revenue'].max():
+    if total_expenses > revenue_forecast['total_revenue'].max():
         st.warning("⚠️ Expenses exceed maximum projected revenue!")
 
 if __name__ == "__main__":
