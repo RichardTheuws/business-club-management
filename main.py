@@ -71,6 +71,9 @@ def main():
     with cols[2]:
         if st.button("View Reports"):
             st.switch_page("pages/03_reports_and_kpis.py")
+    with cols[3]:
+        if st.button("Scenario Planning"):
+            st.switch_page("pages/04_scenario_planning.py")
 
 if __name__ == "__main__":
     main()
