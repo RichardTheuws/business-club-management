@@ -6,8 +6,14 @@ from utils.calculations import (
     calculate_expenses_forecast,
     calculate_cashflow
 )
+from utils.ml_forecasting import (
+    predict_member_growth,
+    predict_churn_probability,
+    predict_revenue
+)
 from utils.config import load_config
 from utils.database import init_db
+import pandas as pd
 
 def scenario_planning():
     st.title("Scenario Planning")
@@ -42,32 +48,38 @@ def scenario_planning():
     growth_config['growth_targets']['Belgium'] = be_growth
     growth_config['growth_targets']['Germany'] = de_growth
     
-    # Main content
-    scenarios = ['pessimistic', 'realistic', 'optimistic']
+    # Main content tabs
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "Traditional Forecasting",
+        "ML Growth Predictions",
+        "Churn Analysis",
+        "ML Revenue Forecast"
+    ])
     
-    try:
-        # Initialize forecast data for all scenarios
-        forecasts = {}
-        expenses = {}
-        cashflows = {}
+    with tab1:
+        st.subheader("Traditional Scenario Analysis")
+        scenarios = ['pessimistic', 'realistic', 'optimistic']
         
-        for scenario in scenarios:
-            forecasts[scenario] = calculate_revenue_forecast(
-                annual_fee, event_fee, num_events, scenario
-            )
-            expenses[scenario] = calculate_expenses_forecast(
-                marketing_percentage, 5000, 1,  # Base salary of 5000
-                num_events, event_fee, scenario
-            )
-            cashflows[scenario] = calculate_cashflow(
-                forecasts[scenario], expenses[scenario], scenario
-            )
-        
-        # Visualization tabs
-        tab1, tab2, tab3 = st.tabs(["Member Growth", "Revenue Forecast", "Cash Flow"])
-        
-        with tab1:
-            st.subheader("Projected Member Growth by Scenario")
+        try:
+            # Initialize forecast data for all scenarios
+            forecasts = {}
+            expenses = {}
+            cashflows = {}
+            
+            for scenario in scenarios:
+                forecasts[scenario] = calculate_revenue_forecast(
+                    annual_fee, event_fee, num_events, scenario
+                )
+                expenses[scenario] = calculate_expenses_forecast(
+                    marketing_percentage, 5000, 1,
+                    num_events, event_fee, scenario
+                )
+                cashflows[scenario] = calculate_cashflow(
+                    forecasts[scenario], expenses[scenario], scenario
+                )
+            
+            # Display traditional forecasts
+            st.subheader("Member Growth Projections")
             fig = go.Figure()
             
             for scenario in scenarios:
@@ -79,136 +91,168 @@ def scenario_planning():
                 ))
             
             fig.update_layout(
-                title="Total Members Projection",
+                title="Traditional Growth Forecast",
                 xaxis_title="Month",
                 yaxis_title="Number of Members"
             )
             st.plotly_chart(fig, use_container_width=True)
             
-            # Country-wise breakdown
-            st.subheader("Member Growth by Country")
-            selected_scenario = st.selectbox(
-                "Select Scenario for Country Breakdown",
-                scenarios,
-                index=scenarios.index('realistic')
-            )
-            
-            fig = go.Figure()
-            for country in ['Netherlands', 'Belgium', 'Germany']:
-                fig.add_trace(go.Scatter(
-                    x=forecasts[selected_scenario].index,
-                    y=forecasts[selected_scenario][f'{country}_members'],
-                    name=country,
-                    mode='lines+markers'
-                ))
-            
-            fig.update_layout(
-                title=f"Member Growth by Country ({selected_scenario.title()} Scenario)",
-                xaxis_title="Month",
-                yaxis_title="Number of Members"
-            )
-            st.plotly_chart(fig, use_container_width=True)
-        
-        with tab2:
-            st.subheader("Revenue Forecast by Scenario")
-            fig = go.Figure()
-            
-            for scenario in scenarios:
-                fig.add_trace(go.Scatter(
-                    x=forecasts[scenario].index,
-                    y=forecasts[scenario]['total_revenue'],
-                    name=f"{scenario.title()} Scenario",
-                    mode='lines+markers'
-                ))
-            
-            fig.update_layout(
-                title="Monthly Revenue Projection",
-                xaxis_title="Month",
-                yaxis_title="Revenue (€)"
-            )
-            st.plotly_chart(fig, use_container_width=True)
-            
-            # Revenue breakdown
-            st.subheader("Revenue Breakdown")
-            selected_scenario = st.selectbox(
-                "Select Scenario for Revenue Breakdown",
-                scenarios,
-                index=scenarios.index('realistic'),
-                key="revenue_scenario"
-            )
-            
-            fig = go.Figure()
-            for revenue_type in ['membership_revenue', 'event_revenue']:
-                fig.add_trace(go.Bar(
-                    x=forecasts[selected_scenario].index,
-                    y=forecasts[selected_scenario][revenue_type],
-                    name=revenue_type.replace('_', ' ').title()
-                ))
-            
-            fig.update_layout(
-                title=f"Revenue Breakdown ({selected_scenario.title()} Scenario)",
-                xaxis_title="Month",
-                yaxis_title="Revenue (€)",
-                barmode='stack'
-            )
-            st.plotly_chart(fig, use_container_width=True)
-        
-        with tab3:
-            st.subheader("Cash Flow Analysis by Scenario")
-            fig = go.Figure()
-            
-            for scenario in scenarios:
-                fig.add_trace(go.Scatter(
-                    x=cashflows[scenario].index,
-                    y=cashflows[scenario]['cumulative_cashflow'],
-                    name=f"{scenario.title()} Scenario",
-                    mode='lines+markers'
-                ))
-            
-            fig.update_layout(
-                title="Cumulative Cash Flow Projection",
-                xaxis_title="Month",
-                yaxis_title="Cumulative Cash Flow (€)"
-            )
-            st.plotly_chart(fig, use_container_width=True)
-            
-            # Monthly cash flow details
-            st.subheader("Monthly Cash Flow Details")
-            selected_scenario = st.selectbox(
-                "Select Scenario for Cash Flow Details",
-                scenarios,
-                index=scenarios.index('realistic'),
-                key="cashflow_scenario"
-            )
-            
-            fig = go.Figure()
-            fig.add_trace(go.Bar(
-                x=cashflows[selected_scenario].index,
-                y=cashflows[selected_scenario]['total_revenue'],
-                name='Revenue'
-            ))
-            fig.add_trace(go.Bar(
-                x=cashflows[selected_scenario].index,
-                y=-cashflows[selected_scenario]['expenses'],
-                name='Expenses'
-            ))
-            fig.add_trace(go.Scatter(
-                x=cashflows[selected_scenario].index,
-                y=cashflows[selected_scenario]['net_cashflow'],
-                name='Net Cash Flow',
-                mode='lines+markers'
-            ))
-            
-            fig.update_layout(
-                title=f"Monthly Cash Flow Details ({selected_scenario.title()} Scenario)",
-                xaxis_title="Month",
-                yaxis_title="Amount (€)",
-                barmode='relative'
-            )
-            st.plotly_chart(fig, use_container_width=True)
+        except Exception as e:
+            st.error(f"Error in traditional forecasting: {str(e)}")
     
-    except Exception as e:
-        st.error(f"An error occurred while generating the scenarios: {str(e)}")
+    with tab2:
+        st.subheader("ML-Based Growth Predictions")
+        try:
+            predictions, future_dates = predict_member_growth()
+            
+            if predictions and future_dates is not None:
+                fig = go.Figure()
+                
+                for country, pred in predictions.items():
+                    fig.add_trace(go.Scatter(
+                        x=future_dates,
+                        y=pred,
+                        name=f"{country} ML Prediction",
+                        mode='lines+markers'
+                    ))
+                
+                fig.update_layout(
+                    title="ML-Based Member Growth Forecast",
+                    xaxis_title="Month",
+                    yaxis_title="Predicted Members"
+                )
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Comparison with traditional forecast
+                st.subheader("ML vs Traditional Forecast Comparison")
+                realistic_forecast = forecasts['realistic']
+                
+                fig = go.Figure()
+                
+                # Add ML predictions
+                total_ml_prediction = sum(pred for pred in predictions.values())
+                fig.add_trace(go.Scatter(
+                    x=future_dates,
+                    y=total_ml_prediction,
+                    name="ML Prediction",
+                    mode='lines+markers'
+                ))
+                
+                # Add traditional forecast
+                fig.add_trace(go.Scatter(
+                    x=realistic_forecast.index,
+                    y=realistic_forecast['total_members'],
+                    name="Traditional Forecast",
+                    mode='lines+markers'
+                ))
+                
+                fig.update_layout(
+                    title="ML vs Traditional Growth Comparison",
+                    xaxis_title="Month",
+                    yaxis_title="Number of Members"
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning("Insufficient data for ML predictions. Please accumulate more historical data.")
+                
+        except Exception as e:
+            st.error(f"Error in ML growth predictions: {str(e)}")
+    
+    with tab3:
+        st.subheader("Churn Risk Analysis")
+        try:
+            churn_predictions = predict_churn_probability()
+            
+            if churn_predictions is not None:
+                # Display high-risk members
+                high_risk = churn_predictions[churn_predictions['churn_probability'] > 0.7]
+                
+                st.write("High Risk Members (>70% churn probability)")
+                if not high_risk.empty:
+                    st.dataframe(high_risk)
+                else:
+                    st.write("No high-risk members identified")
+                
+                # Churn probability distribution
+                fig = px.histogram(
+                    churn_predictions,
+                    x='churn_probability',
+                    nbins=20,
+                    title="Churn Probability Distribution"
+                )
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Feature importance visualization
+                if len(churn_predictions) > 0:
+                    feature_importance = churn_predictions['feature_importance'].iloc[0]
+                    importance_df = pd.DataFrame({
+                        'Feature': feature_importance.keys(),
+                        'Importance': feature_importance.values()
+                    })
+                    
+                    fig = px.bar(
+                        importance_df,
+                        x='Feature',
+                        y='Importance',
+                        title="Churn Prediction Feature Importance"
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning("Insufficient data for churn predictions. Please accumulate more historical data.")
+                
+        except Exception as e:
+            st.error(f"Error in churn analysis: {str(e)}")
+    
+    with tab4:
+        st.subheader("ML-Based Revenue Forecast")
+        try:
+            revenue_predictions, future_dates = predict_revenue()
+            
+            if revenue_predictions is not None and future_dates is not None:
+                # Create revenue forecast visualization
+                fig = go.Figure()
+                
+                # Add ML prediction
+                fig.add_trace(go.Scatter(
+                    x=future_dates,
+                    y=revenue_predictions,
+                    name="ML Revenue Prediction",
+                    mode='lines+markers'
+                ))
+                
+                # Add traditional forecast for comparison
+                realistic_forecast = forecasts['realistic']
+                fig.add_trace(go.Scatter(
+                    x=realistic_forecast.index,
+                    y=realistic_forecast['total_revenue'],
+                    name="Traditional Revenue Forecast",
+                    mode='lines+markers'
+                ))
+                
+                fig.update_layout(
+                    title="Revenue Forecast Comparison",
+                    xaxis_title="Month",
+                    yaxis_title="Revenue (€)"
+                )
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Calculate and display forecast differences
+                ml_total = sum(revenue_predictions)
+                traditional_total = sum(realistic_forecast['total_revenue'])
+                
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("ML Forecast Total", f"€{ml_total:,.2f}")
+                with col2:
+                    st.metric("Traditional Forecast Total", f"€{traditional_total:,.2f}")
+                with col3:
+                    difference = ((ml_total - traditional_total) / traditional_total) * 100
+                    st.metric("Forecast Difference", f"{difference:,.1f}%")
+            else:
+                st.warning("Insufficient data for ML revenue predictions. Please accumulate more historical data.")
+                
+        except Exception as e:
+            st.error(f"Error in ML revenue forecast: {str(e)}")
 
 if __name__ == "__main__":
     scenario_planning()
