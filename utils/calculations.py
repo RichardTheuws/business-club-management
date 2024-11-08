@@ -1,41 +1,38 @@
 import pandas as pd
 import numpy as np
-from utils.database import get_db_connection
+from utils.database import get_sqlalchemy_engine
 from datetime import datetime
+from sqlalchemy import text
 
 def calculate_total_members():
     try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT COUNT(*) FROM members WHERE active = TRUE")
-        total = cur.fetchone()[0]
-        cur.close()
-        conn.close()
-        return total
+        engine = get_sqlalchemy_engine()
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT COUNT(*) FROM members WHERE active = TRUE"))
+            total = result.scalar()
+            return total
     except Exception as e:
         print(f"Error calculating total members: {str(e)}")
         return 0
 
 def calculate_monthly_revenue():
     try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("""
-            SELECT COALESCE(SUM(amount), 0)
-            FROM transactions 
-            WHERE transaction_date >= DATE_TRUNC('month', CURRENT_DATE)
-        """)
-        revenue = cur.fetchone()[0] or 0
-        cur.close()
-        conn.close()
-        return float(revenue)
+        engine = get_sqlalchemy_engine()
+        with engine.connect() as conn:
+            result = conn.execute(text("""
+                SELECT COALESCE(SUM(amount), 0)
+                FROM transactions 
+                WHERE transaction_date >= DATE_TRUNC('month', CURRENT_DATE)
+            """))
+            revenue = result.scalar() or 0
+            return float(revenue)
     except Exception as e:
         print(f"Error calculating monthly revenue: {str(e)}")
         return 0.0
 
 def calculate_member_kpis(period):
     try:
-        conn = get_db_connection()
+        engine = get_sqlalchemy_engine()
         
         # Calculate growth rate
         growth_query = """
@@ -46,7 +43,7 @@ def calculate_member_kpis(period):
             GROUP BY DATE_TRUNC('month', join_date)
             ORDER BY month
         """
-        growth_data = pd.read_sql(growth_query, conn)
+        growth_data = pd.read_sql(text(growth_query), engine)
         
         # Calculate retention rate with zero handling
         retention_query = """
@@ -63,9 +60,7 @@ def calculate_member_kpis(period):
                 END as retention_rate
             FROM member_counts
         """
-        retention_data = pd.read_sql(retention_query, conn)
-        
-        conn.close()
+        retention_data = pd.read_sql(text(retention_query), engine)
         
         return {
             'growth_rate': calculate_growth_rate(growth_data),
@@ -103,36 +98,31 @@ def calculate_growth_rate_change(data):
 
 def calculate_member_distribution():
     try:
-        conn = get_db_connection()
+        engine = get_sqlalchemy_engine()
         query = """
             SELECT country, COUNT(*) as count
             FROM members
             WHERE active = TRUE
             GROUP BY country
         """
-        distribution = pd.read_sql(query, conn)
-        conn.close()
+        distribution = pd.read_sql(text(query), engine)
         return distribution
     except Exception as e:
         print(f"Error calculating member distribution: {str(e)}")
         return pd.DataFrame(columns=['country', 'count'])
 
 def calculate_operating_margin():
-    conn = get_db_connection()
+    engine = get_sqlalchemy_engine()
     
     # Get total revenue
     revenue_query = "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount > 0"
-    cur = conn.cursor()
-    cur.execute(revenue_query)
-    total_revenue = cur.fetchone()[0] or 0
+    with engine.connect() as conn:
+        total_revenue = conn.execute(text(revenue_query)).scalar() or 0
     
     # Get total expenses
     expenses_query = "SELECT COALESCE(SUM(ABS(amount)), 0) FROM transactions WHERE amount < 0"
-    cur.execute(expenses_query)
-    total_expenses = cur.fetchone()[0] or 0
-    
-    cur.close()
-    conn.close()
+    with engine.connect() as conn:
+        total_expenses = conn.execute(text(expenses_query)).scalar() or 0
     
     if total_revenue == 0:
         return 0
@@ -140,7 +130,7 @@ def calculate_operating_margin():
     return ((total_revenue - total_expenses) / total_revenue) * 100
 
 def calculate_event_metrics(period):
-    conn = get_db_connection()
+    engine = get_sqlalchemy_engine()
     
     attendance_query = """
         SELECT 
@@ -150,7 +140,7 @@ def calculate_event_metrics(period):
         FROM events
         ORDER BY date
     """
-    attendance_data = pd.read_sql(attendance_query, conn)
+    attendance_data = pd.read_sql(text(attendance_query), engine)
     
     revenue_query = """
         SELECT 
@@ -162,9 +152,7 @@ def calculate_event_metrics(period):
         FROM events
         ORDER BY date
     """
-    revenue_data = pd.read_sql(revenue_query, conn)
-    
-    conn.close()
+    revenue_data = pd.read_sql(text(revenue_query), engine)
     
     return {
         'attendance_data': attendance_data,
@@ -187,23 +175,19 @@ def calculate_revenue_forecast(annual_fee, event_fee, num_events, scenario='real
         
         try:
             # Try to get actual numbers from database
-            conn = get_db_connection()
-            cur = conn.cursor()
-            
-            member_query = """
-                SELECT country, COUNT(*) as count
-                FROM members
-                WHERE active = TRUE
-                GROUP BY country
-            """
-            cur.execute(member_query)
-            db_members = dict(cur.fetchall())
+            engine = get_sqlalchemy_engine()
+            with engine.connect() as conn:
+                member_query = """
+                    SELECT country, COUNT(*) as count
+                    FROM members
+                    WHERE active = TRUE
+                    GROUP BY country
+                """
+                result = conn.execute(text(member_query))
+                db_members = dict(result.fetchall())
             
             # Update defaults with actual values if available
             current_members.update(db_members)
-            
-            cur.close()
-            conn.close()
         except Exception as e:
             print(f"Warning: Using default member counts due to database error: {str(e)}")
         

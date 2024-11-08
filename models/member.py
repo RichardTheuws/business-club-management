@@ -1,67 +1,86 @@
-from utils.database import get_db_connection
+from utils.database import get_sqlalchemy_engine, get_session
 import pandas as pd
+from sqlalchemy import text
 
 def add_member(name, email, country, join_date, membership_type):
-    conn = get_db_connection()
-    cur = conn.cursor()
+    engine = get_sqlalchemy_engine()
     
     try:
-        cur.execute("""
-            INSERT INTO members (name, email, country, join_date, membership_type)
-            VALUES (%s, %s, %s, %s, %s)
-            RETURNING id
-        """, (name, email, country, join_date, membership_type))
-        
-        member_id = cur.fetchone()[0]
-        
-        # Add initial membership fee transaction
-        cur.execute("""
-            INSERT INTO transactions (member_id, amount, transaction_type, transaction_date)
-            VALUES (%s, %s, %s, %s)
-        """, (member_id, 795, 'membership_fee', join_date))
-        
-        conn.commit()
-        return True
+        with engine.connect() as conn:
+            # Insert member
+            result = conn.execute(
+                text("""
+                    INSERT INTO members (name, email, country, join_date, membership_type)
+                    VALUES (:name, :email, :country, :join_date, :membership_type)
+                    RETURNING id
+                """),
+                {
+                    "name": name,
+                    "email": email,
+                    "country": country,
+                    "join_date": join_date,
+                    "membership_type": membership_type
+                }
+            )
+            member_id = result.scalar()
+            
+            # Add initial membership fee transaction
+            conn.execute(
+                text("""
+                    INSERT INTO transactions (member_id, amount, transaction_type, transaction_date)
+                    VALUES (:member_id, :amount, :transaction_type, :transaction_date)
+                """),
+                {
+                    "member_id": member_id,
+                    "amount": 795,
+                    "transaction_type": "membership_fee",
+                    "transaction_date": join_date
+                }
+            )
+            
+            conn.commit()
+            return True
     except Exception as e:
-        conn.rollback()
-        raise e
-    finally:
-        cur.close()
-        conn.close()
+        print(f"Error adding member: {str(e)}")
+        return False
 
 def get_members_by_country(country):
-    conn = get_db_connection()
-    query = """
-        SELECT 
-            id,
-            name,
-            email,
-            join_date,
-            membership_type
-        FROM members
-        WHERE country = %s AND active = TRUE
-        ORDER BY join_date DESC
-    """
-    
-    members = pd.read_sql(query, conn, params=(country,))
-    conn.close()
-    return members
+    try:
+        engine = get_sqlalchemy_engine()
+        query = text("""
+            SELECT 
+                id,
+                name,
+                email,
+                join_date,
+                membership_type
+            FROM members
+            WHERE country = :country AND active = TRUE
+            ORDER BY join_date DESC
+        """)
+        
+        with engine.connect() as conn:
+            result = pd.read_sql(query, conn, params={"country": country})
+        return result
+    except Exception as e:
+        print(f"Error getting members: {str(e)}")
+        return pd.DataFrame()
 
 def update_member_status(member_id, active):
-    conn = get_db_connection()
-    cur = conn.cursor()
+    engine = get_sqlalchemy_engine()
     
     try:
-        cur.execute("""
-            UPDATE members
-            SET active = %s
-            WHERE id = %s
-        """, (active, member_id))
-        conn.commit()
-        return True
+        with engine.connect() as conn:
+            conn.execute(
+                text("""
+                    UPDATE members
+                    SET active = :active
+                    WHERE id = :member_id
+                """),
+                {"active": active, "member_id": member_id}
+            )
+            conn.commit()
+            return True
     except Exception as e:
-        conn.rollback()
-        raise e
-    finally:
-        cur.close()
-        conn.close()
+        print(f"Error updating member status: {str(e)}")
+        return False
