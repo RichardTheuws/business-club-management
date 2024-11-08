@@ -45,7 +45,7 @@ def calculate_member_kpis(period):
         """
         growth_data = pd.read_sql(text(growth_query), engine)
         
-        # Calculate retention rate with zero handling
+        # Calculate retention rate
         retention_query = """
             WITH member_counts AS (
                 SELECT 
@@ -112,52 +112,138 @@ def calculate_member_distribution():
         return pd.DataFrame(columns=['country', 'count'])
 
 def calculate_operating_margin():
-    engine = get_sqlalchemy_engine()
-    
-    # Get total revenue
-    revenue_query = "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount > 0"
-    with engine.connect() as conn:
-        total_revenue = conn.execute(text(revenue_query)).scalar() or 0
-    
-    # Get total expenses
-    expenses_query = "SELECT COALESCE(SUM(ABS(amount)), 0) FROM transactions WHERE amount < 0"
-    with engine.connect() as conn:
-        total_expenses = conn.execute(text(expenses_query)).scalar() or 0
-    
-    if total_revenue == 0:
+    try:
+        engine = get_sqlalchemy_engine()
+        
+        # Get total revenue
+        revenue_query = "SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE amount > 0"
+        with engine.connect() as conn:
+            total_revenue = conn.execute(text(revenue_query)).scalar() or 0
+        
+        # Get total expenses
+        expenses_query = "SELECT COALESCE(SUM(ABS(amount)), 0) FROM transactions WHERE amount < 0"
+        with engine.connect() as conn:
+            total_expenses = conn.execute(text(expenses_query)).scalar() or 0
+        
+        if total_revenue == 0:
+            return 0
+        
+        return ((total_revenue - total_expenses) / total_revenue) * 100
+    except Exception as e:
+        print(f"Error calculating operating margin: {str(e)}")
         return 0
-    
-    return ((total_revenue - total_expenses) / total_revenue) * 100
 
 def calculate_event_metrics(period):
-    engine = get_sqlalchemy_engine()
-    
-    attendance_query = """
-        SELECT 
-            name,
-            date,
-            revenue / NULLIF(50, 0) as attendance
-        FROM events
-        ORDER BY date
-    """
-    attendance_data = pd.read_sql(text(attendance_query), engine)
-    
-    revenue_query = """
-        SELECT 
-            name,
-            date,
-            revenue,
-            costs,
-            revenue - costs as profit
-        FROM events
-        ORDER BY date
-    """
-    revenue_data = pd.read_sql(text(revenue_query), engine)
-    
-    return {
-        'attendance_data': attendance_data,
-        'revenue_data': revenue_data
-    }
+    try:
+        engine = get_sqlalchemy_engine()
+        
+        attendance_query = """
+            SELECT 
+                name,
+                date,
+                revenue / NULLIF(50, 0) as attendance
+            FROM events
+            ORDER BY date
+        """
+        attendance_data = pd.read_sql(text(attendance_query), engine)
+        
+        revenue_query = """
+            SELECT 
+                name,
+                date,
+                revenue,
+                costs,
+                revenue - costs as profit
+            FROM events
+            ORDER BY date
+        """
+        revenue_data = pd.read_sql(text(revenue_query), engine)
+        
+        return {
+            'attendance_data': attendance_data,
+            'revenue_data': revenue_data
+        }
+    except Exception as e:
+        print(f"Error calculating event metrics: {str(e)}")
+        return {
+            'attendance_data': pd.DataFrame(),
+            'revenue_data': pd.DataFrame()
+        }
+
+def calculate_financial_kpis(period):
+    """Calculate financial KPIs for the given period"""
+    try:
+        engine = get_sqlalchemy_engine()
+        
+        # Calculate revenue metrics
+        revenue_query = """
+            SELECT 
+                DATE_TRUNC('month', transaction_date) as month,
+                SUM(amount) as revenue,
+                COUNT(DISTINCT member_id) as paying_members
+            FROM transactions
+            WHERE amount > 0
+            GROUP BY DATE_TRUNC('month', transaction_date)
+            ORDER BY month
+        """
+        revenue_data = pd.read_sql(text(revenue_query), engine)
+        
+        if revenue_data.empty:
+            return {
+                'revenue_per_member': 0,
+                'revenue_per_member_change': 0,
+                'operating_margin': 0,
+                'operating_margin_change': 0,
+                'financial_data': pd.DataFrame(),
+                'cash_flow_data': pd.DataFrame()
+            }
+        
+        # Calculate revenue per member
+        revenue_data['revenue_per_member'] = revenue_data['revenue'] / revenue_data['paying_members'].replace(0, 1)
+        current_rpm = revenue_data['revenue_per_member'].iloc[-1]
+        prev_rpm = revenue_data['revenue_per_member'].iloc[-2] if len(revenue_data) > 1 else current_rpm
+        
+        # Calculate operating margin
+        current_margin = calculate_operating_margin()
+        
+        # Get expense data for visualizations
+        expense_query = """
+            SELECT 
+                DATE_TRUNC('month', transaction_date) as month,
+                SUM(ABS(amount)) as expenses
+            FROM transactions
+            WHERE amount < 0
+            GROUP BY DATE_TRUNC('month', transaction_date)
+            ORDER BY month
+        """
+        expense_data = pd.read_sql(text(expense_query), engine)
+        
+        # Prepare financial data for visualization
+        financial_data = pd.merge(revenue_data, expense_data, on='month', how='outer').fillna(0)
+        financial_data['profit'] = financial_data['revenue'] - financial_data['expenses']
+        
+        # Calculate cash flow trend
+        cash_flow_data = financial_data.copy()
+        cash_flow_data['cumulative_cash'] = cash_flow_data['profit'].cumsum()
+        
+        return {
+            'revenue_per_member': current_rpm,
+            'revenue_per_member_change': ((current_rpm - prev_rpm) / prev_rpm * 100) if prev_rpm != 0 else 0,
+            'operating_margin': current_margin,
+            'operating_margin_change': 0,  # Could be calculated if historical margin is needed
+            'financial_data': financial_data,
+            'cash_flow_data': cash_flow_data
+        }
+    except Exception as e:
+        print(f"Error calculating financial KPIs: {str(e)}")
+        return {
+            'revenue_per_member': 0,
+            'revenue_per_member_change': 0,
+            'operating_margin': 0,
+            'operating_margin_change': 0,
+            'financial_data': pd.DataFrame(),
+            'cash_flow_data': pd.DataFrame()
+        }
 
 def calculate_revenue_forecast(annual_fee, event_fee, num_events, scenario='realistic'):
     """Calculate revenue forecast based on different growth scenarios"""
@@ -256,7 +342,7 @@ def calculate_expenses_forecast(marketing_percentage, base_salary, num_employees
         print(f"Error in expenses forecast calculation: {str(e)}")
         return {'Marketing': 0, 'Salaries': 0, 'Events': 0, 'Operations': 0}
 
-def calculate_cashflow(revenue_forecast, expenses, scenario='realistic'):
+def calculate_cashflow(revenue_forecast, expenses):
     """Calculate cash flow based on revenue and expense forecasts"""
     try:
         cashflow = revenue_forecast.copy()

@@ -52,10 +52,10 @@ def financial_planning():
     st.plotly_chart(fig)
     
     # Financial Alerts
-    if cashflow['balance'].min() < 0:
+    if cashflow['net_cashflow'].min() < 0:
         st.warning("⚠️ Projected negative cash flow detected!")
     
-    if expenses['total'] > revenue_forecast['total'].max():
+    if expenses['total'] > revenue_forecast['total_revenue'].max():
         st.warning("⚠️ Expenses exceed maximum projected revenue!")
 
 if __name__ == "__main__":

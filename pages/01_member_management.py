@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from utils.database import get_db_connection
+from utils.database import get_sqlalchemy_engine
 from models.member import add_member, get_members_by_country
 
 def member_management():
@@ -35,30 +35,30 @@ def member_management():
         if not nl_members.empty:
             st.dataframe(nl_members)
             
-        # Growth Chart
-        fig = px.line(nl_members.groupby('join_date').size().reset_index(),
-                     x='join_date', y=0, title="Member Growth - Netherlands")
-        st.plotly_chart(fig)
+            # Growth Chart
+            fig = px.line(nl_members.groupby('join_date').size().reset_index(),
+                         x='join_date', y=0, title="Member Growth - Netherlands")
+            st.plotly_chart(fig)
     
     with tab2:
         be_members = get_members_by_country("Belgium")
         if not be_members.empty:
             st.dataframe(be_members)
             
-        # Growth Chart
-        fig = px.line(be_members.groupby('join_date').size().reset_index(),
-                     x='join_date', y=0, title="Member Growth - Belgium")
-        st.plotly_chart(fig)
+            # Growth Chart
+            fig = px.line(be_members.groupby('join_date').size().reset_index(),
+                         x='join_date', y=0, title="Member Growth - Belgium")
+            st.plotly_chart(fig)
     
     with tab3:
         de_members = get_members_by_country("Germany")
         if not de_members.empty:
             st.dataframe(de_members)
             
-        # Growth Chart
-        fig = px.line(de_members.groupby('join_date').size().reset_index(),
-                     x='join_date', y=0, title="Member Growth - Germany")
-        st.plotly_chart(fig)
+            # Growth Chart
+            fig = px.line(de_members.groupby('join_date').size().reset_index(),
+                         x='join_date', y=0, title="Member Growth - Germany")
+            st.plotly_chart(fig)
 
 if __name__ == "__main__":
     member_management()
