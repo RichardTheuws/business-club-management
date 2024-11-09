@@ -1,0 +1,327 @@
+2024-11-09 09:01:04.419Z: Host information
+2024-11-09 09:01:04.419Z: ----------------
+2024-11-09 09:01:04.419Z: OS: Ubuntu 22.04.5 LTS (stable release)
+2024-11-09 09:01:04.419Z: Image details: https://github.com/github/codespaces-host-images/blob/main/README.md
+2024-11-09 09:01:04.419Z: ----------------
+
+=================================================================================
+2024-11-09 09:01:04.419Z: Configuration starting...
+2024-11-09 09:01:04.560Z: Cloning...
+
+=================================================================================
+2024-11-09 09:01:05.342Z: Creating container...
+2024-11-09 09:01:05.405Z: $ devcontainer up --id-label Type=codespaces --workspace-folder /var/lib/docker/codespacemount/workspace/business-club-management --mount type=bind,source=/.codespaces/agent/mount/cache,target=/vscode --user-data-folder /var/lib/docker/codespacemount/.persistedshare --container-data-folder .vscode-remote/data/Machine --container-system-data-folder /var/vscode-remote --log-level trace --log-format json --update-remote-user-uid-default never --mount-workspace-git-root false --omit-config-remote-env-from-metadata --skip-non-blocking-commands --skip-post-create --config "/var/lib/docker/codespacemount/workspace/business-club-management/.devcontainer/devcontainer.json" --override-config /root/.codespaces/shared/merged_devcontainer.json --default-user-env-probe loginInteractiveShell --container-session-data-folder /workspaces/.codespaces/.persistedshare/devcontainers-cli/cache --secrets-file /root/.codespaces/shared/user-secrets-envs.json
+2024-11-09 09:01:05.675Z: @devcontainers/cli 0.68.0. Node.js v18.20.4. linux 6.5.0-1025-azure x64.
+2024-11-09 09:01:06.263Z: Resolving Feature dependencies for 'ghcr.io/devcontainers/features/python:1'...
+2024-11-09 09:01:07.143Z: Resolving Feature dependencies for 'ghcr.io/devcontainers/features/postgres:1'...
+2024-11-09 09:01:07.286Z: {"outcome":"error","message":"ERR: Feature 'ghcr.io/devcontainers/features/postgres:1' could not be processed.  You may not have permission to access this Feature, or may not be logged in.  If the issue persists, report this to the Feature author.","description":"An error occurred setting up the container."}
+2024-11-09 09:01:07.291Z: Error: ERR: Feature 'ghcr.io/devcontainers/features/postgres:1' could not be processed.  You may not have permission to access this Feature, or may not be logged in.  If the issue persists, report this to the Feature author.
+2024-11-09 09:01:07.292Z:     at SeA (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:285:9703)
+2024-11-09 09:01:07.292Z:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2024-11-09 09:01:07.293Z:     at async OC (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:285:12273)
+2024-11-09 09:01:07.294Z:     at async Rc (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:285:12501)
+2024-11-09 09:01:07.294Z:     at async Gc (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:390:1821)
+2024-11-09 09:01:07.294Z:     at async XC (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:393:2228)
+2024-11-09 09:01:07.295Z:     at async Yc (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:393:282)
+2024-11-09 09:01:07.299Z:     at async Pm (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:465:1934)
+2024-11-09 09:01:07.299Z:     at async NH (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:465:610)
+2024-11-09 09:01:07.299Z:     at async YtA (/.codespaces/agent/bin/node_modules/@devcontainers/cli/dist/spec-node/devContainersSpecCLI.js:482:3771)
+2024-11-09 09:01:07.303Z: devcontainer process exited with exit code 1
+
+====================================== ERROR ====================================
+2024-11-09 09:01:07.307Z: Failed to create container.
+=================================================================================
+2024-11-09 09:01:07.307Z: Error: ERR: Feature 'ghcr.io/devcontainers/features/postgres:1' could not be processed.  You may not have permission to access this Feature, or may not be logged in.  If the issue persists, report this to the Feature author.
+2024-11-09 09:01:07.310Z: Error code: 1302 (UnifiedContainersErrorFatalCreatingContainer)
+
+====================================== ERROR ====================================
+2024-11-09 09:01:07.317Z: Container creation failed.
+=================================================================================
+2024-11-09 09:01:07.327Z: 
+
+===================================== WARNING ===================================
+2024-11-09 09:01:07.328Z: Creating recovery container.
+=================================================================================
+
+=================================================================================
+2024-11-09 09:02:19.699Z: Creating container...
+2024-11-09 09:02:19.723Z: $ devcontainer up --id-label Type=codespaces --workspace-folder /var/lib/docker/codespacemount/workspace/business-club-management --mount type=bind,source=/.codespaces/agent/mount/cache,target=/vscode --user-data-folder /var/lib/docker/codespacemount/.persistedshare --container-data-folder .vscode-remote/data/Machine --container-system-data-folder /var/vscode-remote --log-level trace --log-format json --update-remote-user-uid-default never --mount-workspace-git-root false --omit-config-remote-env-from-metadata --skip-non-blocking-commands --skip-post-create --config "/var/lib/docker/codespacemount/workspace/business-club-management/.devcontainer/devcontainer.json" --override-config /root/.codespaces/shared/merged_devcontainer.json --default-user-env-probe loginInteractiveShell --container-session-data-folder /workspaces/.codespaces/.persistedshare/devcontainers-cli/cache --secrets-file /root/.codespaces/shared/user-secrets-envs.json
+2024-11-09 09:02:19.885Z: @devcontainers/cli 0.68.0. Node.js v18.20.4. linux 6.5.0-1025-azure x64.
+2024-11-09 09:02:20.296Z: $alpine -c echo Container started
+2024-11-09 09:02:20.314Z: Unable to find image 'mcr.microsoft.com/devcontainers/base:alpine' locally2024-11-09 09:02:20.314Z: 
+2024-11-09 09:02:20.436Z: alpine: Pulling from devcontainers/base
+2024-11-09 09:02:20.479Z: 
+2024-11-09 09:02:20.481Z: [1A2024-11-09 09:02:20.481Z: [2K
+43c4264eed91: Pulling fs layer 
+[1B
+[1A[2K
+f40462439694: Pulling fs layer 
+[1B
+[1A[2K
+78f82a04246d: Pulling fs layer 
+[1B
+[1A[2K
+ab30627c2e5e: Pulling fs layer 
+[1B
+[1A[2K
+1c6e677dc7f6: Pulling fs layer 
+[1B
+[1A[2K
+90218552dd33: Pulling fs layer 
+[1B
+[1A[2K
+43d7c7b4c7f6: Pulling fs layer 
+[1B[3A[2K
+1c6e677dc7f6: Waiting 
+[3B[2A[2K
+90218552dd33: Waiting 
+[2B[1A[2K
+43d7c7b4c7f6: Waiting 
+[1B[4A[2K
+ab30627c2e5e: Waiting 
+[4B2024-11-09 09:02:20.522Z: [5A[2K
+78f82a04246d: Downloading     134B/134B
+[5B2024-11-09 09:02:20.523Z: [5A[2K
+78f82a04246d: Verifying Checksum 
+[5B[5A[2K
+78f82a04246d: Download complete 
+[5B2024-11-09 09:02:20.566Z: [7A[2K
+43c4264eed91: Downloading  48.34kB/3.624MB
+2024-11-09 09:02:20.566Z: [7B2024-11-09 09:02:20.585Z: [4A[2K2024-11-09 09:02:20.585Z: 
+ab30627c2e5e: Downloading     223B/223B
+[4B2024-11-09 09:02:20.587Z: [4A[2K
+ab30627c2e5e: Verifying Checksum 
+[4B[4A[2K
+ab30627c2e5e: Download complete 
+[4B2024-11-09 09:02:20.589Z: [7A[2K
+43c4264eed91: Downloading  3.624MB/3.624MB
+[7B2024-11-09 09:02:20.589Z: [7A[2K
+43c4264eed91: Verifying Checksum 
+[7B[7A[2K
+43c4264eed91: Download complete 
+[7B[6A[2K
+f40462439694: Downloading     409B/409B
+[6B2024-11-09 09:02:20.590Z: [6A[2K
+f40462439694: Verifying Checksum 
+[6B[6A[2K
+f40462439694: Download complete 
+[6B2024-11-09 09:02:20.653Z: [7A[2K
+43c4264eed91: Extracting  65.54kB/3.624MB
+[7B2024-11-09 09:02:20.731Z: [3A[2K
+1c6e677dc7f6: Downloading     234B/234B
+[3B[3A[2K
+1c6e677dc7f6: Verifying Checksum 
+[3B[3A2024-11-09 09:02:20.732Z: [2K
+1c6e677dc7f6: Download complete 
+[3B2024-11-09 09:02:20.739Z: [1A[2K
+43d7c7b4c7f6: Downloading  440.6kB/43.39MB
+[1B2024-11-09 09:02:20.758Z: [7A[2K
+43c4264eed91: Extracting  786.4kB/3.624MB
+[7B2024-11-09 09:02:20.763Z: [2A[2K
+90218552dd33: Downloading  538.9kB/228.2MB
+[2B2024-11-09 09:02:20.849Z: [1A[2K
+43d7c7b4c7f6: Downloading   14.6MB/43.39MB
+[1B2024-11-09 09:02:20.859Z: [7A[2K
+2024-11-09 09:02:20.859Z: 43c4264eed91: Extracting  2.621MB/3.624MB
+[7B2024-11-09 09:02:20.889Z: [2A[2K
+2024-11-09 09:02:20.891Z: 90218552dd33: Downloading   10.8MB/228.2MB
+[2B2024-11-09 09:02:20.964Z: [1A[2K
+43d7c7b4c7f6: Downloading   29.2MB/43.39MB
+[1B2024-11-09 09:02:20.988Z: [2A[2K
+90218552dd33: Downloading   25.4MB/228.2MB
+[2B2024-11-09 09:02:20.988Z: [7A[2K
+43c4264eed91: Extracting  3.539MB/3.624MB
+[7B2024-11-09 09:02:21.027Z: [7A[2K
+43c4264eed91: Extracting  3.624MB/3.624MB
+[7B2024-11-09 09:02:21.056Z: [1A[2K2024-11-09 09:02:21.056Z: 
+43d7c7b4c7f6: Downloading  36.27MB/43.39MB
+[1B2024-11-09 09:02:21.087Z: [1A2024-11-09 09:02:21.087Z: [2K
+43d7c7b4c7f6: Verifying Checksum 
+[1B2024-11-09 09:02:21.087Z: [1A[2K
+43d7c7b4c7f6: Download complete 
+[1B2024-11-09 09:02:21.087Z: [2A2024-11-09 09:02:21.088Z: [2K
+90218552dd33: Downloading  36.21MB/228.2MB
+[2B2024-11-09 09:02:21.183Z: [2A[2K2024-11-09 09:02:21.185Z: 
+90218552dd33: Downloading  62.16MB/228.2MB
+[2B2024-11-09 09:02:21.284Z: [2A[2K
+90218552dd33: Downloading  84.33MB/228.2MB
+[2B2024-11-09 09:02:21.389Z: [2A2024-11-09 09:02:21.389Z: [2K
+90218552dd33: Downloading  109.2MB/228.2MB
+[2B2024-11-09 09:02:21.487Z: [2A[2K2024-11-09 09:02:21.488Z: 
+90218552dd33: Downloading  129.2MB/228.2MB
+[2B2024-11-09 09:02:21.594Z: [2A[2K
+90218552dd33: Downloading  151.9MB/228.2MB
+[2B2024-11-09 09:02:21.696Z: [2A2024-11-09 09:02:21.696Z: [2K
+90218552dd33: Downloading  173.5MB/228.2MB
+[2B2024-11-09 09:02:21.801Z: [2A[2K
+90218552dd33: Downloading  198.4MB/228.2MB
+[2B2024-11-09 09:02:21.905Z: [2A[2K
+90218552dd33: Downloading  221.7MB/228.2MB
+[2B2024-11-09 09:02:21.935Z: [2A[2K
+90218552dd33: Verifying Checksum 
+[2B[2A[2K
+90218552dd33: Download complete 
+[2B2024-11-09 09:02:23.270Z: [7A[2K
+43c4264eed91: Pull complete 
+[7B2024-11-09 09:02:23.276Z: [6A2024-11-09 09:02:23.276Z: [2K
+f40462439694: Extracting     409B/409B
+[6B[6A[2K
+f40462439694: Extracting     409B/409B
+[6B2024-11-09 09:02:23.298Z: [6A2024-11-09 09:02:23.298Z: [2K
+f40462439694: Pull complete 
+[6B2024-11-09 09:02:24.038Z: [5A2024-11-09 09:02:24.038Z: [2K
+78f82a04246d: Extracting     134B/134B
+[5B[5A[2K
+78f82a04246d: Extracting     134B/134B
+[5B2024-11-09 09:02:24.052Z: [5A[2K
+78f82a04246d: Pull complete 
+[5B2024-11-09 09:02:24.057Z: [4A2024-11-09 09:02:24.057Z: [2K
+ab30627c2e5e: Extracting     223B/223B
+2024-11-09 09:02:24.057Z: [4B[4A[2K
+ab30627c2e5e: Extracting     223B/223B
+[4B2024-11-09 09:02:24.086Z: [4A[2K
+ab30627c2e5e: Pull complete 
+[4B2024-11-09 09:02:24.090Z: [3A[2K
+2024-11-09 09:02:24.090Z: 1c6e677dc7f6: Extracting     234B/234B
+2024-11-09 09:02:24.090Z: [3B[3A[2K
+1c6e677dc7f6: Extracting     234B/234B
+[3B2024-11-09 09:02:24.101Z: [3A[2K2024-11-09 09:02:24.102Z: 
+1c6e677dc7f6: Pull complete 
+[3B2024-11-09 09:02:24.111Z: [2A[2K
+90218552dd33: 2024-11-09 09:02:24.111Z: Extracting  557.1kB/228.2MB
+[2B2024-11-09 09:02:24.216Z: [2A[2K
+90218552dd33: Extracting  6.128MB/228.2MB
+2024-11-09 09:02:24.217Z: [2B2024-11-09 09:02:24.321Z: [2A[2K
+90218552dd33: Extracting  13.93MB/228.2MB
+[2B2024-11-09 09:02:24.424Z: [2A[2K
+90218552dd33: Extracting   19.5MB/228.2MB
+[2B2024-11-09 09:02:24.549Z: [2A[2K
+90218552dd33: 2024-11-09 09:02:24.550Z: Extracting  22.28MB/228.2MB
+[2B2024-11-09 09:02:24.675Z: [2A[2K
+90218552dd33: Extracting   23.4MB/228.2MB
+[2B2024-11-09 09:02:24.798Z: [2A[2K
+90218552dd33: 2024-11-09 09:02:24.798Z: Extracting  24.51MB/228.2MB
+[2B2024-11-09 09:02:24.918Z: [2A[2K
+90218552dd33: 2024-11-09 09:02:24.918Z: Extracting  28.41MB/228.2MB
+[2B2024-11-09 09:02:25.028Z: [2A[2K
+90218552dd33: Extracting  36.21MB/228.2MB
+[2B2024-11-09 09:02:25.134Z: [2A[2K
+90218552dd33: Extracting  42.89MB/228.2MB
+[2B2024-11-09 09:02:25.235Z: [2A[2K
+90218552dd33: Extracting  48.46MB/228.2MB
+[2B2024-11-09 09:02:25.337Z: [2A[2K
+90218552dd33: Extracting  52.36MB/228.2MB
+[2B2024-11-09 09:02:25.438Z: [2A[2K
+90218552dd33: Extracting  56.82MB/228.2MB
+[2B2024-11-09 09:02:25.540Z: [2A[2K
+90218552dd33: Extracting  64.62MB/228.2MB
+[2B2024-11-09 09:02:25.641Z: [2A[2K
+90218552dd33: Extracting  79.66MB/228.2MB
+[2B2024-11-09 09:02:25.746Z: [2A[2K
+90218552dd33: Extracting  92.47MB/228.2MB
+[2B2024-11-09 09:02:25.850Z: [2A[2K
+90218552dd33: Extracting    107MB/228.2MB
+[2B2024-11-09 09:02:25.956Z: [2A[2K
+90218552dd33: Extracting    112MB/228.2MB
+[2B2024-11-09 09:02:26.071Z: [2A[2K
+90218552dd33: Extracting    117MB/228.2MB
+[2B2024-11-09 09:02:26.173Z: [2A[2K
+90218552dd33: Extracting  119.2MB/228.2MB
+[2B2024-11-09 09:02:26.278Z: [2A[2K
+90218552dd33: Extracting  123.7MB/228.2MB
+[2B2024-11-09 09:02:26.383Z: [2A[2K
+90218552dd33: Extracting  130.9MB/228.2MB
+[2B2024-11-09 09:02:26.482Z: [2A[2K
+2024-11-09 09:02:26.482Z: 90218552dd33: Extracting  137.6MB/228.2MB
+[2B2024-11-09 09:02:26.589Z: [2A[2K
+90218552dd33: 2024-11-09 09:02:26.589Z: Extracting  145.4MB/228.2MB
+[2B2024-11-09 09:02:26.689Z: [2A[2K
+90218552dd33: Extracting  152.6MB/228.2MB
+[2B2024-11-09 09:02:26.790Z: [2A[2K
+90218552dd33: Extracting  159.9MB/228.2MB
+[2B2024-11-09 09:02:26.892Z: [2A[2K
+90218552dd33: Extracting  167.1MB/228.2MB
+[2B2024-11-09 09:02:27.012Z: [2A[2K
+90218552dd33: Extracting  174.9MB/228.2MB
+[2B2024-11-09 09:02:27.104Z: [2A[2K
+90218552dd33: Extracting  182.2MB/228.2MB
+[2B2024-11-09 09:02:27.213Z: [2A[2K
+2024-11-09 09:02:27.214Z: 90218552dd33: Extracting  190.5MB/228.2MB
+[2B2024-11-09 09:02:27.315Z: [2A[2K
+90218552dd33: Extracting  198.3MB/228.2MB
+[2B2024-11-09 09:02:27.417Z: [2A[2K
+90218552dd33: Extracting  206.1MB/228.2MB
+[2B2024-11-09 09:02:27.524Z: [2A[2K
+90218552dd33: Extracting  214.5MB/228.2MB
+[2B2024-11-09 09:02:27.656Z: [2A[2K
+90218552dd33: Extracting  219.5MB/228.2MB
+[2B2024-11-09 09:02:27.788Z: [2A[2K
+90218552dd33: Extracting  221.7MB/228.2MB
+[2B2024-11-09 09:02:27.962Z: [2A[2K
+90218552dd33: Extracting  223.9MB/228.2MB
+[2B2024-11-09 09:02:28.186Z: [2A[2K
+90218552dd33: Extracting  225.6MB/228.2MB
+[2B2024-11-09 09:02:28.301Z: [2A[2K
+90218552dd33: 2024-11-09 09:02:28.301Z: Extracting  226.2MB/228.2MB
+[2B2024-11-09 09:02:28.312Z: [2A[2K
+2024-11-09 09:02:28.313Z: 90218552dd33: Extracting  228.2MB/228.2MB
+[2B2024-11-09 09:02:32.413Z: [2A[2K
+90218552dd33: Pull complete 
+[2B2024-11-09 09:02:32.427Z: [1A2024-11-09 09:02:32.428Z: [2K
+43d7c7b4c7f6: Extracting  458.8kB/43.39MB
+[1B2024-11-09 09:02:32.589Z: [1A[2K
+43d7c7b4c7f6: Extracting  5.046MB/43.39MB
+[1B2024-11-09 09:02:32.691Z: [1A2024-11-09 09:02:32.691Z: [2K
+43d7c7b4c7f6: Extracting  8.258MB/43.39MB
+[1B2024-11-09 09:02:32.802Z: [1A[2K
+43d7c7b4c7f6: Extracting  12.39MB/43.39MB
+[1B2024-11-09 09:02:32.910Z: [1A[2K
+43d7c7b4c7f6: Extracting  14.68MB/43.39MB
+[1B2024-11-09 09:02:33.007Z: [1A[2K
+43d7c7b4c7f6: 2024-11-09 09:02:33.007Z: Extracting  17.89MB/43.39MB
+[1B2024-11-09 09:02:33.113Z: [1A[2K
+43d7c7b4c7f6: 2024-11-09 09:02:33.113Z: Extracting  22.94MB/43.39MB
+[1B2024-11-09 09:02:33.398Z: [1A[2K
+43d7c7b4c7f6: 2024-11-09 09:02:33.398Z: Extracting   23.4MB/43.39MB
+[1B2024-11-09 09:02:33.503Z: [1A[2K
+43d7c7b4c7f6: Extracting  27.98MB/43.39MB
+[1B2024-11-09 09:02:33.658Z: [1A[2K
+43d7c7b4c7f6: 2024-11-09 09:02:33.658Z: Extracting  29.82MB/43.39MB
+[1B2024-11-09 09:02:33.808Z: [1A[2K
+2024-11-09 09:02:33.808Z: 43d7c7b4c7f6: Extracting   31.2MB/43.39MB
+[1B2024-11-09 09:02:33.917Z: [1A2024-11-09 09:02:33.917Z: [2K
+43d7c7b4c7f6: Extracting  32.11MB/43.39MB
+[1B2024-11-09 09:02:34.014Z: [1A[2K
+43d7c7b4c7f6: 2024-11-09 09:02:34.014Z: Extracting  33.49MB/43.39MB
+[1B2024-11-09 09:02:34.559Z: [1A[2K
+43d7c7b4c7f6: Extracting  33.95MB/43.39MB
+2024-11-09 09:02:34.560Z: [1B2024-11-09 09:02:34.716Z: [1A[2K
+43d7c7b4c7f6: Extracting  36.24MB/43.39MB
+[1B2024-11-09 09:02:34.851Z: [1A[2K
+43d7c7b4c7f6: Extracting  38.08MB/43.39MB
+[1B2024-11-09 09:02:34.980Z: [1A[2K
+2024-11-09 09:02:34.980Z: 43d7c7b4c7f6: Extracting  39.91MB/43.39MB
+[1B2024-11-09 09:02:35.161Z: [1A[2K
+43d7c7b4c7f6: 2024-11-09 09:02:35.161Z: Extracting  41.29MB/43.39MB
+[1B2024-11-09 09:02:35.251Z: [1A[2K
+43d7c7b4c7f6: Extracting  43.39MB/43.39MB
+[1B2024-11-09 09:02:36.236Z: [1A[2K
+43d7c7b4c7f6: Pull complete 
+[1B2024-11-09 09:02:36.249Z: Digest: sha256:b7a03802a7af5b3bc45e567a697ce4747c470296f900fadce6f9bdc02296a386
+Status: Downloaded newer image for mcr.microsoft.com/devcontainers/base:alpine
+2024-11-09 09:02:36.849Z: Container started
+2024-11-09 09:02:36.978Z: Outcome: success User: vscode WorkspaceFolder: /workspaces/business-club-management
+2024-11-09 09:02:36.984Z: devcontainer process exited with exit code 0
+
+=================================================================================
+2024-11-09 09:02:37.614Z: Running blocking commands...
+2024-11-09 09:02:37.643Z: $ devcontainer up --id-label Type=codespaces --workspace-folder /var/lib/docker/codespacemount/workspace/business-club-management --mount type=bind,source=/.codespaces/agent/mount/cache,target=/vscode --user-data-folder /var/lib/docker/codespacemount/.persistedshare --container-data-folder .vscode-remote/data/Machine --container-system-data-folder /var/vscode-remote --log-level trace --log-format json --update-remote-user-uid-default never --mount-workspace-git-root false --omit-config-remote-env-from-metadata --skip-non-blocking-commands --expect-existing-container --config "/var/lib/docker/codespacemount/workspace/business-club-management/.devcontainer/devcontainer.json" --override-config /root/.codespaces/shared/merged_devcontainer.json --default-user-env-probe loginInteractiveShell --container-session-data-folder /workspaces/.codespaces/.persistedshare/devcontainers-cli/cache --secrets-file /root/.codespaces/shared/user-secrets-envs.json
+2024-11-09 09:02:37.917Z: @devcontainers/cli 0.68.0. Node.js v18.20.4. linux 6.5.0-1025-azure x64.
+2024-11-09 09:02:38.138Z: Outcome: success User: vscode WorkspaceFolder: /workspaces/business-club-management
+2024-11-09 09:02:38.162Z: devcontainer process exited with exit code 0
+
+=================================================================================
+2024-11-09 09:02:38.170Z: Configuring codespace...
+
+=================================================================================
+2024-11-09 09:02:38.177Z: Finished configuring codespace.
