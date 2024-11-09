@@ -10,8 +10,10 @@
         }
     },
     "forwardPorts": [5000],
-    "postCreateCommand": "pip install -r requirements.txt",
-    "postStartCommand": "streamlit run main.py",
+    "postCreateCommand": "bash -c 'pip install -r requirements.txt && python -m pytest'",
+    "postStartCommand": {
+        "streamlit": "streamlit run main.py --server.port 5000 --server.address 0.0.0.0"
+    },
     "customizations": {
         "vscode": {
             "extensions": [
@@ -24,15 +26,20 @@
             "settings": {
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
                 "python.linting.enabled": true,
-                "python.formatting.provider": "black"
+                "python.formatting.provider": "black",
+                "editor.formatOnSave": true,
+                "files.trimTrailingWhitespace": true
             }
         }
     },
     "containerEnv": {
         "PYTHONPATH": "${containerWorkspaceFolder}",
         "PORT": "5000",
-        "HOST": "0.0.0.0"
+        "HOST": "0.0.0.0",
+        "STREAMLIT_SERVER_PORT": "5000",
+        "STREAMLIT_SERVER_ADDRESS": "0.0.0.0"
     },
     "remoteUser": "vscode",
-    "updateRemoteUserUID": true
+    "updateRemoteUserUID": true,
+    "waitFor": "postCreateCommand"
 }

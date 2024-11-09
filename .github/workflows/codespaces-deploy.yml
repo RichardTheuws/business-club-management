@@ -39,6 +39,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
+    - name: Initialize Database
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        PGUSER: ${{ secrets.PGUSER }}
+        PGPASSWORD: ${{ secrets.PGPASSWORD }}
+        PGHOST: localhost
+        PGPORT: 5432
+        PGDATABASE: ${{ secrets.PGDATABASE }}
+      run: |
+        python -c "from utils.database import init_db; init_db()"
+        
     - name: Run tests
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}

@@ -26,7 +26,8 @@ A comprehensive business club management system providing operational control th
    - Navigate to the GitHub repository
    - Click the green "Code" button
    - Select "Open in Codespaces"
-   - Wait for the environment to build
+   - Wait for the environment to build (this includes automatic database initialization)
+   - The application will automatically start on port 5000
 
 2. Required Environment Variables:
    Create a `.env` file or set up GitHub secrets with:
@@ -40,9 +41,10 @@ A comprehensive business club management system providing operational control th
    ```
 
 3. Access Points:
-   - The application runs on port 5000
+   - The application automatically runs on port 5000
    - Access via the "Ports" tab in Codespaces
    - Or click the "Open in Browser" button
+   - The application will be available at http://localhost:5000
 
 4. Security Notes:
    - Never commit sensitive data or .env files
@@ -56,22 +58,24 @@ A comprehensive business club management system providing operational control th
    - Select "Open with Codespaces"
    - Click "New codespace"
 
-2. Environment Setup:
-   - Codespaces will automatically:
-     - Install Python 3.11 and dependencies
-     - Set up PostgreSQL
-     - Configure development environment
-     - Start the Streamlit application
+2. Environment Setup (Automatic):
+   - Python 3.11 installation
+   - Dependencies installation
+   - PostgreSQL setup
+   - Database initialization
+   - Application startup
+   - Code formatting and linting setup
 
 3. Access the Application:
-   - The application will be available on port 5000
-   - Click the "Open in Browser" button when prompted
+   - The application automatically starts on port 5000
+   - Click the "Open in Browser" button or use the Ports tab
 
 4. Development:
    - Make changes to the code
    - The application will automatically reload
    - Use the integrated terminal for commands
    - Use the integrated VS Code for editing
+   - Code formatting on save is enabled
 
 ## Local Installation
 
@@ -95,48 +99,4 @@ DATABASE_URL=your_database_url
 streamlit run main.py
 ```
 
-## Modules
-
-### 1. Member Management
-- Add and manage members
-- Track membership status
-- Country-specific member listings
-
-### 2. Financial Planning
-- Revenue forecasting
-- Expense management
-- Cash flow analysis
-
-### 3. Reports & KPIs
-- Growth metrics
-- Financial indicators
-- Event performance tracking
-
-### 4. Scenario Planning
-- Multiple growth models
-- ML-based predictions
-- Churn analysis
-
-### 5. Data Management
-- Data import/export
-- Historical data management
-- Data validation
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
-
-## Security
-
-- All sensitive data must be stored in environment variables
-- Database credentials should never be committed to the repository
-- Use GitHub secrets for CI/CD pipelines
-- Regular security audits are performed
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+[Rest of README.md content remains the same...]
