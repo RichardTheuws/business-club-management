@@ -4,13 +4,10 @@
     "features": {
         "ghcr.io/devcontainers/features/python:1": {
             "version": "3.11"
-        },
-        "ghcr.io/devcontainers/features/postgres:1": {
-            "version": "latest"
         }
     },
-    "forwardPorts": [5000],
-    "postCreateCommand": "bash -c 'pip install -r requirements.txt && python -m pytest'",
+    "forwardPorts": [5000, 5432],
+    "postCreateCommand": "pip install -r requirements.txt && python -m pytest",
     "postStartCommand": {
         "streamlit": "streamlit run main.py --server.port 5000 --server.address 0.0.0.0"
     },
@@ -37,9 +34,32 @@
         "PORT": "5000",
         "HOST": "0.0.0.0",
         "STREAMLIT_SERVER_PORT": "5000",
-        "STREAMLIT_SERVER_ADDRESS": "0.0.0.0"
+        "STREAMLIT_SERVER_ADDRESS": "0.0.0.0",
+        "DATABASE_URL": "${localEnv:DATABASE_URL}",
+        "PGUSER": "${localEnv:PGUSER}",
+        "PGPASSWORD": "${localEnv:PGPASSWORD}",
+        "PGHOST": "${localEnv:PGHOST}",
+        "PGPORT": "${localEnv:PGPORT}",
+        "PGDATABASE": "${localEnv:PGDATABASE}"
     },
     "remoteUser": "vscode",
     "updateRemoteUserUID": true,
-    "waitFor": "postCreateCommand"
+    "waitFor": "postCreateCommand",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "initializeCommand": {
+        "setupEnv": "echo 'Environment setup complete'"
+    },
+    "onCreateCommand": {
+        "setupPostgres": [
+            "sudo apt-get update",
+            "sudo apt-get install -y postgresql postgresql-contrib",
+            "sudo service postgresql start",
+            "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '${localEnv:PGPASSWORD}'\"",
+            "sudo -u postgres psql -c \"CREATE DATABASE ${localEnv:PGDATABASE}\"",
+            "sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${localEnv:PGDATABASE} TO postgres\"",
+            "sudo service postgresql restart"
+        ]
+    }
 }
