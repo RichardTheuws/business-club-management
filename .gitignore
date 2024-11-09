@@ -43,3 +43,11 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
+
+# Replit specific
+.replit
+replit.nix
+.config/
+.upm/
+.cache/
+poetry.lock
