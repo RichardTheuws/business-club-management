@@ -20,6 +20,35 @@ A comprehensive business club management system providing operational control th
 - Machine Learning Models
 - Plotly for Visualizations
 
+## Public Access via GitHub Codespaces
+
+1. Quick Start:
+   - Navigate to the GitHub repository
+   - Click the green "Code" button
+   - Select "Open in Codespaces"
+   - Wait for the environment to build
+
+2. Required Environment Variables:
+   Create a `.env` file or set up GitHub secrets with:
+   ```
+   DATABASE_URL=postgresql://user:password@host:port/dbname
+   PGUSER=your_db_user
+   PGPASSWORD=your_db_password
+   PGHOST=localhost
+   PGPORT=5432
+   PGDATABASE=your_db_name
+   ```
+
+3. Access Points:
+   - The application runs on port 5000
+   - Access via the "Ports" tab in Codespaces
+   - Or click the "Open in Browser" button
+
+4. Security Notes:
+   - Never commit sensitive data or .env files
+   - Use GitHub secrets for sensitive information
+   - Keep your database credentials secure
+
 ## Development with GitHub Codespaces
 
 1. Open in Codespaces:
@@ -100,6 +129,13 @@ streamlit run main.py
 3. Commit your changes
 4. Push to the branch
 5. Create a new Pull Request
+
+## Security
+
+- All sensitive data must be stored in environment variables
+- Database credentials should never be committed to the repository
+- Use GitHub secrets for CI/CD pipelines
+- Regular security audits are performed
 
 ## License
 

@@ -3,6 +3,8 @@ name: Codespaces Deployment
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -42,8 +44,18 @@ jobs:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         PGUSER: ${{ secrets.PGUSER }}
         PGPASSWORD: ${{ secrets.PGPASSWORD }}
-        PGHOST: ${{ secrets.PGHOST }}
-        PGPORT: ${{ secrets.PGPORT }}
+        PGHOST: localhost
+        PGPORT: 5432
         PGDATABASE: ${{ secrets.PGDATABASE }}
       run: |
         pytest
+
+    - name: Check formatting
+      run: |
+        black --check .
+        flake8 .
+
+    - name: Security check
+      run: |
+        pip install safety
+        safety check

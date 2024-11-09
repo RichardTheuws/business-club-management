@@ -5,10 +5,13 @@
         "ghcr.io/devcontainers/features/python:1": {
             "version": "3.11"
         },
-        "ghcr.io/devcontainers/features/postgres:1": {}
+        "ghcr.io/devcontainers/features/postgres:1": {
+            "version": "latest"
+        }
     },
     "forwardPorts": [5000],
-    "postCreateCommand": "pip install -r requirements.txt && streamlit run main.py",
+    "postCreateCommand": "pip install -r requirements.txt",
+    "postStartCommand": "streamlit run main.py",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -17,10 +20,19 @@
                 "ms-toolsai.jupyter",
                 "ms-python.black-formatter",
                 "ms-python.flake8"
-            ]
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.linting.enabled": true,
+                "python.formatting.provider": "black"
+            }
         }
     },
     "containerEnv": {
-        "PYTHONPATH": "${containerWorkspaceFolder}"
-    }
+        "PYTHONPATH": "${containerWorkspaceFolder}",
+        "PORT": "5000",
+        "HOST": "0.0.0.0"
+    },
+    "remoteUser": "vscode",
+    "updateRemoteUserUID": true
 }
