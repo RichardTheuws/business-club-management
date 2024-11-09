@@ -20,7 +20,31 @@ A comprehensive business club management system providing operational control th
 - Machine Learning Models
 - Plotly for Visualizations
 
-## Installation
+## Development with GitHub Codespaces
+
+1. Open in Codespaces:
+   - Click the "Code" button on the repository
+   - Select "Open with Codespaces"
+   - Click "New codespace"
+
+2. Environment Setup:
+   - Codespaces will automatically:
+     - Install Python 3.11 and dependencies
+     - Set up PostgreSQL
+     - Configure development environment
+     - Start the Streamlit application
+
+3. Access the Application:
+   - The application will be available on port 5000
+   - Click the "Open in Browser" button when prompted
+
+4. Development:
+   - Make changes to the code
+   - The application will automatically reload
+   - Use the integrated terminal for commands
+   - Use the integrated VS Code for editing
+
+## Local Installation
 
 1. Clone the repository:
 ```bash
