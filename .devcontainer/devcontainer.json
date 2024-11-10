@@ -25,7 +25,10 @@
                 "python.linting.enabled": true,
                 "python.formatting.provider": "black",
                 "editor.formatOnSave": true,
-                "files.trimTrailingWhitespace": true
+                "files.trimTrailingWhitespace": true,
+                "git.enabled": true,
+                "git.autofetch": true,
+                "git.enableCommitSigning": false
             }
         }
     },
@@ -40,7 +43,8 @@
         "PGPASSWORD": "${localEnv:PGPASSWORD}",
         "PGHOST": "${localEnv:PGHOST}",
         "PGPORT": "${localEnv:PGPORT}",
-        "PGDATABASE": "${localEnv:PGDATABASE}"
+        "PGDATABASE": "${localEnv:PGDATABASE}",
+        "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
     },
     "remoteUser": "vscode",
     "updateRemoteUserUID": true,
@@ -49,13 +53,14 @@
         "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
     ],
     "initializeCommand": {
-        "setupEnv": "echo 'Environment setup complete'"
-    },
-    "onCreateCommand": {
         "setupPostgres": [
             "sudo apt-get update",
             "sudo apt-get install -y postgresql postgresql-contrib",
-            "sudo service postgresql start",
+            "sudo service postgresql start"
+        ]
+    },
+    "onCreateCommand": {
+        "configurePostgres": [
             "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '${localEnv:PGPASSWORD}'\"",
             "sudo -u postgres psql -c \"CREATE DATABASE ${localEnv:PGDATABASE}\"",
             "sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${localEnv:PGDATABASE} TO postgres\"",
