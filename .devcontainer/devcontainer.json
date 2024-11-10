@@ -51,20 +51,5 @@
     "waitFor": "postCreateCommand",
     "mounts": [
         "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
-    ],
-    "initializeCommand": {
-        "setupPostgres": [
-            "sudo apt-get update",
-            "sudo apt-get install -y postgresql postgresql-contrib",
-            "sudo service postgresql start"
-        ]
-    },
-    "onCreateCommand": {
-        "configurePostgres": [
-            "sudo -u postgres psql -c \"ALTER USER postgres PASSWORD '${localEnv:PGPASSWORD}'\"",
-            "sudo -u postgres psql -c \"CREATE DATABASE ${localEnv:PGDATABASE}\"",
-            "sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${localEnv:PGDATABASE} TO postgres\"",
-            "sudo service postgresql restart"
-        ]
-    }
+    ]
 }
